@@ -60,3 +60,51 @@ print(target)
 输出结果为``equality``  
 得到Level 3地址：  
 http://www.pythonchallenge.com/pc/def/equality.html
+## Level 3
+hint:  
+``One small letter, surrounded by EXACTLY three big bodyguards on each of its sides.``  
+打开网页源码，发现注释中有大量大小写英文字母字符  
+把该部分注释复制到txt文件中以便读取：[level3.txt](./level3.txt)    
+结合提示，猜想需要找到左右均有三个大写字母的小写字母 . 
+
+```python
+with open('level3.txt', encoding='utf-8') as f:
+    str = f.read()
+target = re.findall(r'[^A-Z][A-Z]{3}([a-z])[A-Z]{3}[^A-Z]',str)
+for i in target:
+    print(i,end="")
+```
+输出结果为``linkedlist``  
+得到Level 4地址：  
+http://www.pythonchallenge.com/pc/def/linkedlist.html  
+实际需要跳转至  
+http://www.pythonchallenge.com/pc/def/linkedlist.php  
+## Level 4
+点击图片，页面跳转，url后面增加``nothing=12345``  
+页面内容为：``and the next nothing is 44827``  
+结合初始页面源码注释中的：  
+``urllib may help. DON'T TRY ALL NOTHINGS, since it will never end. 400 times is more than enough.``  
+需要借助urllib库不断爬取url中的新值，循环次数可以设为400次  
+
+```python
+def nextPage(p):
+    url = 'http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing='+p
+    str = urllib.request.urlopen(url).read().decode('utf-8')
+    try:
+        newP = re.search(r'([0-9]+)', str).group(1)
+        return newP
+    except:
+        print(str)
+        return ''
+
+p = '12345'
+for i in range(1,400):
+    print('{}:{}'.format(i,p))
+    p = nextPage(p)
+```
+爬至第86次时，会出现异常情况：  
+``Yes. Divide by two and keep going.``  
+本来应该手动计算一下再继续爬取，后来发现直接跳过对结果也没有影响  
+爬至第357次时出现``peak.html``  
+得到Level 5地址：  
+http://www.pythonchallenge.com/pc/def/peak.html   
