@@ -266,4 +266,27 @@ print(''.join([chr(i) for i in msg]))
 输出结果：``integrity``  
 得到Level 8地址：  
 http://www.pythonchallenge.com/pc/def/integrity.html 
+## Level 8
+本关页面显示一张图片，点击图片中的蜜蜂后弹出对话框，要求输入用户名和密码   
+查看页面注释，发现有如下提示：  
+  
+```
+<!--
+un: 'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
+pw: 'BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08'
+-->
+```
+原本猜测这是某种方式加密后的密文，但观察很久也没有思路  
+搜索其他解法才知道是bz2格式编码，需要调用``bz2``库：  
 
+```python
+un = b'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
+pw = b'BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08'
+
+username = bz2.decompress(un)
+password = bz2.decompress(pw)
+print(username,password)
+```
+输出：``b'huge' b'file'``，用户名和密码应分别为``huge``和``file``  
+输入对话框，跳转至Level 9：  
+http://www.pythonchallenge.com/pc/return/good.html  
