@@ -238,4 +238,32 @@ http://www.pythonchallenge.com/pc/def/hockey.html
 看来答案不是上面图像中的字母形状，改为拼成各字母形状的字母：``oxygen``  
 得到Level 7地址：  
 http://www.pythonchallenge.com/pc/def/oxygen.html 
+## Level 7
+本关的页面只有一个图片，源码内没有其他提示  
+将图片下载至本地以便处理  
+![level7](./oxygen.png)  
+看到这个有点懵，搜索了网上的其他解法才知道：要对图片中间不同灰度值的色块对应的像素值进行处理
+- 获取像素值（经过验证，这些色块各自的r/g/b值是相同的，获取其中一个即可）
+- 像素值即为ascii码，翻译为对应字母输出  
+要用到Python中图像处理的Pillow库，之前也用过  
+
+```python
+image = Image.open("oxygen.png")
+data = [chr(image.getpixel((i, 43))[0]) for i in range(0,609,7)]
+print("".join(data))
+```
+此时输出结果为：  
+
+```
+smart guy, you made it. the next level is [105, 110, 116, 101, 103, 114, 105, 116, 121]
+```
+将``[105, 110, 116, 101, 103, 114, 105, 116, 121]``ascii码对应字母输出：  
+
+```python
+msg = [105, 110, 116, 101, 103, 114, 105, 116, 121]
+print(''.join([chr(i) for i in msg]))
+```
+输出结果：``integrity``  
+得到Level 8地址：  
+http://www.pythonchallenge.com/pc/def/integrity.html 
 
