@@ -363,7 +363,7 @@ img.show()
 img.save('level9.png')
 ```
 得到如下图片：  
-![level9.png](./level9.png)
-看起来是一头公牛，尝试单词``bull``  
+![level9.png](./level9.png)  
+看起来是一头公牛，尝试单词``bull``   
 得到Level 10地址：  
-http://www.pythonchallenge.com/pc/def/bull.html 
+http://www.pythonchallenge.com/pc/return/bull.html  
