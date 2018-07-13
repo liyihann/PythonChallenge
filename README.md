@@ -232,6 +232,10 @@ file.close()
  **************************************************************
 ```
 即``hockey``  
+打开地址：  
+http://www.pythonchallenge.com/pc/def/hockey.html  
+提示：``it's in the air. look at the letters.``  
+看来答案不是上面图像中的字母形状，改为拼成各字母形状的字母：``oxygen``  
 得到Level 7地址：  
-http://www.pythonchallenge.com/pc/def/hockey.html 
+http://www.pythonchallenge.com/pc/def/oxygen.html 
 
