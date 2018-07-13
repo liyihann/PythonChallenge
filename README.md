@@ -148,5 +148,90 @@ print ('\n'.join([''.join([p[0] * p[1] for p in row]) for row in str]))
 即``channel``  
 得到Level 6地址：  
 http://www.pythonchallenge.com/pc/def/channel.html  
+## Level 6
+页面源码注释有提示：``<-- zip -->``  
+将url后缀``html``改为``zip``得到 ``channel.zip``，放入项目文件夹  
+调用``zipfile``对压缩文件进行操作  
+首先检查一下文件列表：  
+ 
+```python
+file = zipfile.ZipFile("channel.zip","r")
+for name in file.namelist():
+    print(name)
+```
+输出了全部文件名，发现有一个``readme.txt``文件，查看内容：  
 
+```python
+print(file.open("readme.txt").read().decode('utf-8'))
+```
+输出：  
+
+```
+# welcome to my zipped list.
+# hint1: start from 90052
+# hint2: answer is inside the zip
+```
+那么就从名字为``90052.txt``的文件开始遍历：  
+
+```python
+def nextFile(name):
+    path = name+".txt"
+    str = file.open(path).read().decode('utf-8')
+    try:
+        newName = re.search(r'([0-9]+)', str).group(1)
+        return newName
+    except:
+        print(str)
+        return ''
+p = '90052'
+for i in range(1,len(file.namelist())):
+    print('{}:{}'.format(i,p))
+    p = nextFile(p)
+file.close()
+```
+输出了遍历过程中各文件名字之后，最后有这样的提示：``Collect the comments.``  
+根据提示，需要对文件的``comment``进行操作  
+以上代码修改为：  
+
+```python
+comments=[]
+def nextFile(name):
+    path = name+".txt"
+    str = file.open(path).read().decode('utf-8')
+    try:
+        newName = re.search(r'([0-9]+)', str).group(1)
+        comments.append(file.getinfo(path).comment.decode('utf-8'))
+        return newName
+    except:
+        print(str)
+        return ''
+p = '90052'
+for i in range(1,len(file.namelist())):
+    print('{}:{}'.format(i,p))
+    p = nextFile(p)
+print("".join(comments))
+
+file.close()
+```
+输出结果为：  
+
+```
+****************************************************************
+****************************************************************
+**                                                            **
+**   OO    OO    XX      YYYY    GG    GG  EEEEEE NN      NN  **
+**   OO    OO  XXXXXX   YYYYYY   GG   GG   EEEEEE  NN    NN   **
+**   OO    OO XXX  XXX YYY   YY  GG GG     EE       NN  NN    **
+**   OOOOOOOO XX    XX YY        GGG       EEEEE     NNNN     **
+**   OOOOOOOO XX    XX YY        GGG       EEEEE      NN      **
+**   OO    OO XXX  XXX YYY   YY  GG GG     EE         NN      **
+**   OO    OO  XXXXXX   YYYYYY   GG   GG   EEEEEE     NN      **
+**   OO    OO    XX      YYYY    GG    GG  EEEEEE     NN      **
+**                                                            **
+****************************************************************
+ **************************************************************
+```
+即``hockey``  
+得到Level 7地址：  
+http://www.pythonchallenge.com/pc/def/hockey.html 
 
